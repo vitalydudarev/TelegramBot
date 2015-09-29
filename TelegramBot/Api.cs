@@ -4,25 +4,31 @@ namespace TelegramBot
 {
     public class Api
     {
-        public const string AccessToken = @"";
-        public string Uri = string.Format(@"https://api.telegram.org/bot{0}/", AccessToken);
+		private string _accessToken;
+		private string _uri;
+
+		public Api(string accessToken)
+		{
+			_accessToken = accessToken;
+			_uri = @"https://api.telegram.org/bot" + _accessToken + "/";
+		}
 
         public string GetUpdates()
         {
-            var getRequest = new Request().SendGetRequest(Uri + "getUpdates");
-            var response = new Response().GetResponse(getRequest);
-            return response;
+            var request = new GetRequest(_uri + "getUpdates");
+			var responseString = request.Send();
+			return responseString;
         }
 
         public void SendMessage(int userId, string message)
         {
-            var dict = new Dictionary<string, string>
-			{ 
-				{"chat_id", userId.ToString()},
-				{"text", message},
-			};
-            var request = new Request().SendPostRequest(Uri + "sendMessage", dict);
-            var response = new Response().GetResponse(request);
+            var parameters = new Dictionary<string, string>
+            { 
+                {"chat_id", userId.ToString()},
+                {"text", message},
+            };
+			var request = new PostRequest(_uri + "sendMessage", parameters);
+			var responseString = request.Send();
         }
     }
 }

@@ -4,7 +4,7 @@
 	{
 		public static void Main (string[] args)
 		{
-			var api = new Api();
+			var api = new Api("");
 		}
 	}
 }
