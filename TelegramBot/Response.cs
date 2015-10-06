@@ -29,8 +29,9 @@ namespace TelegramBot
 
                 return (T)null;
             }
-            
-            return _parser.Parse<T>(_responseString);
+
+            var result = _parser.GetToken(_responseString, "result");
+            return _parser.Parse<T>(result);
         }
     }
 
