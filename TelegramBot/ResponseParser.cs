@@ -3,34 +3,31 @@ using System.Net;
 
 namespace TelegramBot
 {
-    public class Response<T> where T : class
+    public class ResponseParser
     {
         public bool HasErrors { get { return _error != null; } }
         public Error Error { get { return _error; } }
-        public T Result { get {return GetResult(); } }
 
-        private string _responseString;
         private Error _error;
         private JsonParser _parser;
 
-        public Response(string responseString)
+        public ResponseParser()
         {
-            _responseString = responseString;
             _parser = new JsonParser();
         }
             
-        private T GetResult()
+        public T Parse<T>(string inputString) where T : class
         {
-            var token = _parser.GetToken(_responseString, "ok");
+            var token = _parser.GetToken(inputString, "ok");
 
             if (!bool.Parse(token))
             {
-                _error = _parser.Parse<Error> (_responseString);
+                _error = _parser.Parse<Error> (inputString);
 
-                return (T)null;
+                return null;
             }
 
-            var result = _parser.GetToken(_responseString, "result");
+            var result = _parser.GetToken(inputString, "result");
             return _parser.Parse<T>(result);
         }
     }
