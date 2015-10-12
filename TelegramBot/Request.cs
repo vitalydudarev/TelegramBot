@@ -7,46 +7,61 @@ namespace TelegramBot
 {
     public abstract class Request
     {
-        protected string _uri;
+        protected Dictionary<string, string> _parameters;
 
-        public Request(string uri)
+        protected Request(Dictionary<string, string> parameters)
         {
-            _uri = uri;
+            _parameters = parameters;
         }
-            
-        public abstract string Send();
 
-        protected string GetResponse(HttpWebRequest request)
+        protected Request()
         {
-            Stream responseStream;
+        }
 
-            try
+        public abstract WebRequest CreateRequest(string uri);
+    }
+
+    public class GetRequest : Request
+    {
+        public GetRequest()
+        {
+        }
+
+        public GetRequest(Dictionary<string, string> parameters) : base(parameters)
+        {
+        }
+
+        public override WebRequest CreateRequest(string uri)
+        {
+            string url = uri;
+
+            if (_parameters != null && _parameters.Count > 0)
             {
-                var response = (HttpWebResponse)request.GetResponse();
-                responseStream = response.GetResponseStream();
+                string post = "";
+
+                foreach (var parameter in _parameters)
+                {
+                    post += parameter.Key + "=" + parameter.Value + "&";
+                }
+
+                post = post.Remove(post.Length - 1);
+
+                url += "?" + post;
             }
-            catch (WebException e)
-            {
-                responseStream = e.Response.GetResponseStream();
-            }
-                
-            var responseString = new StreamReader(responseStream).ReadToEnd();
-            return responseString;
+
+            return (HttpWebRequest)WebRequest.Create(url);
         }
     }
 
     public class PostRequest : Request
     {
-        private Dictionary<string, string> _parameters;
-
-        public PostRequest(string uri, Dictionary<string, string> parameters) : base(uri)
+        public PostRequest(Dictionary<string, string> parameters) : base(parameters)
         {
-            _parameters = parameters;
         }
-            
-        public override string Send()
+
+        public override WebRequest CreateRequest(string uri)
         {
-            var request = (HttpWebRequest)WebRequest.Create(_uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
 
             string post = "";
 
@@ -54,7 +69,7 @@ namespace TelegramBot
             {
                 post += parameter.Key + "=" + parameter.Value + "&";
             }
-                
+
             post = post.Remove(post.Length - 1);
 
             var data = Encoding.ASCII.GetBytes(post);
@@ -67,21 +82,8 @@ namespace TelegramBot
             {
                 stream.Write(data, 0, data.Length);
             }
-                
-            return GetResponse(request);
-        }
-    }
 
-    public class GetRequest : Request
-    {
-        public GetRequest(string uri) : base(uri)
-        {
-        }
-            
-        public override string Send()
-        {
-            var request = (HttpWebRequest)WebRequest.Create(_uri);
-            return GetResponse(request);
+            return request;
         }
     }
 }
