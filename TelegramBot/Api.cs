@@ -15,20 +15,20 @@ namespace TelegramBot
 
         public string GetUpdates()
         {
-            var request = new GetRequest(_uri + "getUpdates");
-            var responseString = request.Send();
-            return responseString;
+            var client = new Client(_uri + "getUpdates");
+            return client.Send(new GetRequest());
         }
 
-        public void SendMessage(int userId, string message)
+        public string SendMessage(int userId, string message)
         {
             var parameters = new Dictionary<string, string>
             { 
-                {"chat_id", userId.ToString()},
-                {"text", message},
+                { "chat_id", userId.ToString() },
+                { "text", message },
             };
-            var request = new PostRequest(_uri + "sendMessage", parameters);
-            var responseString = request.Send();
+
+            var client = new Client(_uri + "sendMessage");
+            return client.Send(new PostRequest(parameters));
         }
     }
 }
