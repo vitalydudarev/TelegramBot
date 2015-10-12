@@ -1,4 +1,6 @@
-﻿namespace TelegramBot
+﻿using System;
+
+namespace TelegramBot
 {
     public class Update
     {
@@ -12,6 +14,17 @@
         public User From { get; set; }
         public int Date { get; set; }
         public string Text { get; set; }
+        public Chat Chat { get; set; }
+    }
+
+    public class Chat
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+        public string Title { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
     }
 
     public class User
