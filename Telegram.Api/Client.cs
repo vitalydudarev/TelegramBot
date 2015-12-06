@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace TelegramBot
+namespace Telegram.Api
 {
     public interface IClient
     {

@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Net;
-
-namespace TelegramBot
+﻿namespace Telegram.Api
 {
     public class ResponseParser
     {
@@ -9,7 +6,7 @@ namespace TelegramBot
         public Error Error { get { return _error; } }
 
         private Error _error;
-        private JsonParser _parser;
+        private readonly JsonParser _parser;
 
         public ResponseParser()
         {

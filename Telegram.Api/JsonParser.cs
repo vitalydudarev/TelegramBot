@@ -1,14 +1,13 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace TelegramBot
+namespace Telegram.Api
 {
     public class JsonParser
     {
-        private JsonSerializerSettings _settings;
+        private readonly JsonSerializerSettings _settings;
 
         public JsonParser()
         {

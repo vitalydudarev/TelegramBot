@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Text;
 
-namespace TelegramBot
+namespace Telegram.Api
 {
     public abstract class Request
     {
