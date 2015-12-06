@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{F9CE2E44-5230-4732-8E99-DFD765A3BE05}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TelegramBot</RootNamespace>
-    <AssemblyName>TelegramBot</AssemblyName>
+    <RootNamespace>Telegram.Api</RootNamespace>
+    <AssemblyName>Telegram.Api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
