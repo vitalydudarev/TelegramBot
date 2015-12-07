@@ -17,6 +17,7 @@ namespace Telegram.Bot
             _started = true;
 
             int offset = 0;
+            var updateProcessor = new UpdateProcessor();
 
             while (_started)
             {
@@ -24,7 +25,9 @@ namespace Telegram.Bot
 
                 foreach (var update in updates)
                 {
-                    // process updates
+                    var response = updateProcessor.ProcessIncoming(update);
+                    if (response != null)
+                        _api.SendMessage(response.ChatId, response.Message);
 
                     offset = update.UpdateId + 1;
                 }
