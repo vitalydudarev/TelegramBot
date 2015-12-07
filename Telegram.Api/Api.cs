@@ -31,16 +31,19 @@ namespace Telegram.Api
             return _responseParser.Parse<Update[]>(response);
         }
 
-        public string SendMessage(int userId, string message)
+        public Message SendMessage(int chatId, string message)
         {
             var parameters = new Dictionary<string, string>
             { 
-                { "chat_id", userId.ToString() },
+                { "chat_id", chatId.ToString() },
                 { "text", message },
             };
 
             var client = new Client(_uri + "sendMessage");
-            return client.Send(new PostRequest(parameters));
+            var request = new PostRequest(parameters);
+            var response = client.Send(request);
+
+            return _responseParser.Parse<Message>(response);
         }
     }
 }
