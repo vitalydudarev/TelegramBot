@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
+using System.Collections.Generic;
 
 namespace Telegram.Api
 {
@@ -6,12 +7,14 @@ namespace Telegram.Api
     {
         private string _accessToken;
         private readonly string _uri;
+        private readonly string _fileUri;
         private readonly ResponseParser _responseParser;
 
         public Api(string accessToken)
         {
             _accessToken = accessToken;
             _uri = @"https://api.telegram.org/bot" + _accessToken + "/";
+            _fileUri = @"https://api.telegram.org/file/bot" + _accessToken + "/";
             _responseParser = new ResponseParser();
         }
 
@@ -44,6 +47,28 @@ namespace Telegram.Api
             var response = client.Send(request);
 
             return _responseParser.Parse<Message>(response);
+        }
+
+        public File GetFile(string fileId)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "file_id", fileId }
+            };
+
+            var client = new Client(_uri + "getFile");
+            var request = new GetRequest(parameters);
+            var response = client.Send(request);
+
+            return _responseParser.Parse<File>(response);
+        }
+
+        public byte[] DownloadFile(string filePath)
+        {
+            var client = new Client(_fileUri + filePath);
+            var request = new GetRequest();
+
+            return client.SendSync(request);
         }
     }
 }
