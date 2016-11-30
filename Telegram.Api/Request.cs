@@ -71,7 +71,7 @@ namespace Telegram.Api
 
             post = post.Remove(post.Length - 1);
 
-            var data = Encoding.ASCII.GetBytes(post);
+            var data = Encoding.UTF8.GetBytes(post);
 
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
