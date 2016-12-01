@@ -1,6 +1,5 @@
-Telegram.Api/bin
-Telegram.Api/obj
-Telegram.Api.userprefs
-Telegram.Bot/bin
-Telegram.Bot/obj
-Telegram.Bot.userprefs
+*/bin
+*/obj
+.vs/
+.idea/
+*.userprefs
