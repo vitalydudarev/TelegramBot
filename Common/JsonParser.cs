@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Telegram.Api
+namespace Common
 {
     public class JsonParser
     {
@@ -30,9 +30,8 @@ namespace Telegram.Api
         {
             protected override string ResolvePropertyName(string propertyName)
             {
-                return Regex.Replace(propertyName, @"([A-Z])([A-Z][a-z])|([a-z0-9])([A-Z])", "$1$3_$2$4").ToLower(); 
+                return Regex.Replace(propertyName, @"([A-Z])([A-Z][a-z])|([a-z0-9])([A-Z])", "$1$3_$2$4").ToLower();
             }
         }
     }
 }
-

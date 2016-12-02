@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace Telegram.Api
+namespace Common
 {
     public abstract class Request
     {

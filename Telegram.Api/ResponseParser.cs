@@ -1,4 +1,6 @@
-﻿namespace Telegram.Api
+﻿using Common;
+
+namespace Telegram.Api
 {
     public class ResponseParser
     {
