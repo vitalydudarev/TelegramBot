@@ -13,7 +13,7 @@ namespace Telegram.Bot
             var config = Config.Get("config.json");
             config.Validate();
 
-            _bot = new Bot(config.AccessToken);
+            _bot = new Bot(config.AccessToken, config);
 
             var thread = new Thread(Run);
             thread.Start();
