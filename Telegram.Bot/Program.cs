@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Common;
 
 namespace Telegram.Bot
 {
@@ -13,7 +10,10 @@ namespace Telegram.Bot
 
         static void Main(string[] args)
         {
-            _bot = new Bot();
+            var config = Config.Get("config.json");
+            config.Validate();
+
+            _bot = new Bot(config.AccessToken);
 
             var thread = new Thread(Run);
             thread.Start();
