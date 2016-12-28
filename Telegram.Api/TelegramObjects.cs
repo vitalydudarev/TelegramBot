@@ -15,6 +15,9 @@
         public Chat Chat { get; set; }
         public PhotoSize[] Photo { get; set; }
         public Document Document { get; set; }
+        public Location Location { get; set; }
+        public Venue Venue { get; set; }
+        public Contact Contact { get; set; }
     }
 
     public class Chat
@@ -39,6 +42,22 @@
     {
         public double Longitude { get; set; }
         public double Latitude { get; set; }
+    }
+
+    public class Venue
+    {
+        public Location Location { get; set; }
+        public string Title { get; set; }
+        public string Address { get; set; }
+        public string FoursquareId { get; set; }
+    }
+
+    public class Contact
+    {
+        public string PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int? UserId { get; set; }
     }
 
     public class PhotoSize
