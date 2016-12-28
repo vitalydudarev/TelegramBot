@@ -9,6 +9,7 @@ namespace Common
         public string AccessToken { get; set; }
         public int? BotOwnerId { get; set; }
         public string LogsDirectory { get; set; }
+        public string DownloadsDirectory { get; set; }
 
         public void Validate()
         {

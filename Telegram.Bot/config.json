@@ -1,5 +1,6 @@
 {
   "accessToken": "",
   "botOwnerId": null,
-  "logsDirectory": "output" 
+  "logsDirectory": "output",
+  "downloadsDirectory": "" 
 }

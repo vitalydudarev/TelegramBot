@@ -1,34 +1,47 @@
-﻿using System;
+﻿using System.IO;
+using Telegram.Api;
 
 namespace Telegram.Bot
 {
     public class UpdateProcessor
     {
-        public UpdateProcessor()
+        private readonly Api.Api _api;
+        private readonly string _downloadsDirectory;
+
+        public UpdateProcessor(Api.Api api, string downloadsDirectory)
         {
+            _api = api;
+            _downloadsDirectory = downloadsDirectory;
         }
 
-        public ResponseMessage ProcessIncoming(Api.Update update)
+        public void Process(Update update)
         {
             var message = update.Message;
-            if (message != null) 
+            if (message != null)
             {
-                return new ResponseMessage(update.Message.Chat.Id, "You said: " + message.Text);
+                if (message.Photo != null)
+                    DownloadFile(message.Photo[message.Photo.Length - 1].FileId, message.Chat.Id);
+
+                if (message.Document != null)
+                    DownloadFile(message.Document.FileId, message.Chat.Id, message.Document.FileName);
             }
-
-            return null;
         }
-    }
 
-    public class ResponseMessage
-    {
-        public int ChatId { get; set; }
-        public string Message { get; set; }
-
-        public ResponseMessage(int chatId, string message)
+        private void DownloadFile(string fileId, int senderId, string fileName = null)
         {
-            ChatId = chatId;
-            Message = message;
+            var file = _api.GetFile(fileId);
+            var fileBytes = _api.DownloadFile(file.FilePath);
+            
+            var fileType = file.FilePath.Split('/')[0];
+            if (string.IsNullOrEmpty(fileName))
+                fileName = file.FilePath.Split('/')[1];
+
+            var destinationFolder = Path.Combine(_downloadsDirectory, senderId.ToString(), fileType);
+            
+            if (!Directory.Exists(destinationFolder))
+                Directory.CreateDirectory(destinationFolder);
+
+            System.IO.File.WriteAllBytes(Path.Combine(destinationFolder, fileName), fileBytes);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Telegram.Bot
         public Bot(string accessToken, Config config)
         {
             _api = new Api.Api(accessToken);
-            _updateProcessor = new UpdateProcessor(_api);
+            _updateProcessor = new UpdateProcessor(_api, config.DownloadsDirectory);
             _updateLogger = new UpdateLogger(config.LogsDirectory);
         }
 
@@ -29,12 +29,10 @@ namespace Telegram.Bot
 
                 foreach (var update in updates)
                 {
-                    var response = _updateProcessor.ProcessIncoming(update);
-                    if (response != null)
-                        _api.SendMessage(response.ChatId, response.Message);
+                    _updateProcessor.Process(update);
+                    _updateLogger.Write(update);
 
                     offset = update.UpdateId + 1;
-                    _updateLogger.Write(update);
                 }
 
                 Thread.Sleep(1000);
