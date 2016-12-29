@@ -1,48 +1,48 @@
-﻿using System.Threading;
-using Common;
+﻿using System.IO;
+using Telegram.Api;
 
 namespace Telegram.Bot
 {
     public class Bot
     {
-        private bool _started;
         private readonly Api.Api _api;
-        private readonly UpdateProcessor _updateProcessor;
-        private readonly UpdateLogger _updateLogger;
+        private readonly string _downloadsDirectory;
 
-        public Bot(string accessToken, Config config)
+        public Bot(Api.Api api, string downloadsDirectory)
         {
-            _api = new Api.Api(accessToken);
-            _updateProcessor = new UpdateProcessor(_api, config.DownloadsDirectory);
-            _updateLogger = new UpdateLogger(config.LogsDirectory);
+            _api = api;
+            _downloadsDirectory = downloadsDirectory;
         }
 
-        public void Start()
+        public void Process(Update update)
         {
-            _started = true;
-
-            int offset = 0;
-            
-            while (_started)
+            var message = update.Message;
+            if (message != null)
             {
-                var updates = _api.GetUpdates(offset);
+                if (message.Photo != null)
+                    DownloadFile(message.Photo[message.Photo.Length - 1].FileId, message.Chat.Id);
 
-                foreach (var update in updates)
-                {
-                    _updateProcessor.Process(update);
-                    _updateLogger.Write(update);
-
-                    offset = update.UpdateId + 1;
-                }
-
-                Thread.Sleep(1000);
+                if (message.Document != null)
+                    DownloadFile(message.Document.FileId, message.Chat.Id, message.Document.FileName);
             }
         }
 
-        public void Stop()
+        private void DownloadFile(string fileId, int senderId, string fileName = null)
         {
-            _started = false;
-            _updateLogger.Dispose();
+            var file = _api.GetFile(fileId);
+            var fileBytes = _api.DownloadFile(file.FilePath);
+            
+            var fileType = file.FilePath.Split('/')[0];
+            if (string.IsNullOrEmpty(fileName))
+                fileName = file.FilePath.Split('/')[1];
+
+            var destinationFolder = Path.Combine(_downloadsDirectory, senderId.ToString(), fileType);
+            
+            if (!Directory.Exists(destinationFolder))
+                Directory.CreateDirectory(destinationFolder);
+
+            System.IO.File.WriteAllBytes(Path.Combine(destinationFolder, fileName), fileBytes);
         }
     }
 }
+

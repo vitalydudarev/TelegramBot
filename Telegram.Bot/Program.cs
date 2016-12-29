@@ -6,26 +6,26 @@ namespace Telegram.Bot
 {
     class Program
     {
-        private static Bot _bot;
+        private static BotService _botService;
 
         static void Main(string[] args)
         {
             var config = Config.Get("config.json");
             config.Validate();
 
-            _bot = new Bot(config.AccessToken, config);
+            _botService = new BotService(config.AccessToken, config);
 
             var thread = new Thread(Run);
             thread.Start();
 
             var line = Console.ReadLine();
             if (line == "s")
-                _bot.Stop();
+                _botService.Stop();
         }
 
         private static void Run()
         {
-            _bot.Start();
+            _botService.Start();
         }
     }
 }

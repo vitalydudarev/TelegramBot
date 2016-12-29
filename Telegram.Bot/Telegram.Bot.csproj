@@ -46,10 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bot.cs" />
+    <Compile Include="BotService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateLogger.cs" />
-    <Compile Include="UpdateProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
