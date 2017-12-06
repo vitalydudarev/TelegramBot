@@ -47,7 +47,7 @@ namespace Telegram.Bot
 
         private void Save()
         {
-            var serialized = JsonConvert.SerializeObject(_updateList, Formatting.Indented);
+            var serialized = JsonConvert.SerializeObject(_updateList, Newtonsoft.Json.Formatting.Indented);
             File.WriteAllText(_logFileName, serialized);
         }
     }

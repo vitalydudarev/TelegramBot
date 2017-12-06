@@ -6,7 +6,7 @@ namespace Common
 {
     public abstract class Request
     {
-        protected Dictionary<string, string> _parameters;
+        protected readonly Dictionary<string, string> _parameters;
 
         protected Request(Dictionary<string, string> parameters)
         {

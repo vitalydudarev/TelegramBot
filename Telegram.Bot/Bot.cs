@@ -45,4 +45,3 @@ namespace Telegram.Bot
         }
     }
 }
-

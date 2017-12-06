@@ -84,4 +84,3 @@
         public int FileSize { get; set; }
     }
 }
-
